@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="databaseMgr">
+      <UniqueIdentifier>{c3b0b82f-94f8-4389-bde1-2d070a9689ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="databaseTask">
+      <UniqueIdentifier>{63e1bc7a-49cc-4b09-99a6-948db3f26d5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="databaseTask\task">
+      <UniqueIdentifier>{080b4c33-49b9-4d69-84e8-6d9762c08c6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="message">
+      <UniqueIdentifier>{64b9c891-b1b6-4953-8a6d-d6d9b16b58a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{9ba59b99-4fbf-46c6-b08f-5f36658291a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="accountApp.cpp" />
+    <ClCompile Include="accountServer.cpp" />
+    <ClCompile Include="network\netStub.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="network\netStubMgr.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseTask\task\accountAuthTask.cpp">
+      <Filter>databaseTask\task</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseTask\task\namePwdTask.cpp">
+      <Filter>databaseTask\task</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseTask\databaseTask.cpp">
+      <Filter>databaseTask</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseTask\databaseTaskMgr.cpp">
+      <Filter>databaseTask</Filter>
+    </ClCompile>
+    <ClCompile Include="databaseMgr\databaseMgr.cpp">
+      <Filter>databaseMgr</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="accountApp.h" />
+    <ClInclude Include="accountServer.h" />
+    <ClInclude Include="network\netStub.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="network\netStubMgr.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="message\accountServerMsg.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="message\message.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="message\msgTypeSrv.h">
+      <Filter>message</Filter>
+    </ClInclude>
+    <ClInclude Include="databaseTask\task\accountAuthTask.h">
+      <Filter>databaseTask\task</Filter>
+    </ClInclude>
+    <ClInclude Include="databaseTask\task\namePwdTask.h">
+      <Filter>databaseTask\task</Filter>
+    </ClInclude>
+    <ClInclude Include="databaseTask\databaseTask.h">
+      <Filter>databaseTask</Filter>
+    </ClInclude>
+    <ClInclude Include="databaseTask\databaseTaskMgr.h">
+      <Filter>databaseTask</Filter>
+    </ClInclude>
+    <ClInclude Include="databaseMgr\databaseMgr.h">
+      <Filter>databaseMgr</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
