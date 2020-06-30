@@ -16,7 +16,7 @@ namespace RN
 namespace AccountServer
 {
 
-CDATABASETASK_SUBCLASS_DEFINE(VerifyNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYPE_VERIFY_NAME_PWD)
+CDATABASETASK_SUBCLASS_DEFINE(VerifyNamePwd, PBLib::CAccountVerify, EDB_TASK_TYPE_VERIFY_NAME_PWD)
 {
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -28,8 +28,8 @@ CDATABASETASK_SUBCLASS_DEFINE(VerifyNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYP
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志
@@ -45,12 +45,12 @@ CDATABASETASK_SUBCLASS_DEFINE(VerifyNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYP
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_Check(true);
 
-	PTBuf::CAccountVerify ptBuf;
+	PBLib::CAccountVerify ptBuf;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_Next;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ReadUint64(ptBuf, accountid);
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ReadString(ptBuf, accountname);
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ReadString(ptBuf, accountpwd);
-	delete pDataReader;
+	BCLIB_SAFE_DELETE(pDataReader);
 
 	if (m_ptBuf.accountpwd() == ptBuf.accountpwd())
 	{
@@ -70,7 +70,7 @@ CDATABASETASK_SUBCLASS_DEFINE(VerifyNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYP
     return true;
 }
 
-CDATABASETASK_SUBCLASS_DEFINE(InsertNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYPE_INSERT_NAME_PWD)
+CDATABASETASK_SUBCLASS_DEFINE(InsertNamePwd, PBLib::CAccountVerify, EDB_TASK_TYPE_INSERT_NAME_PWD)
 {
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -82,8 +82,8 @@ CDATABASETASK_SUBCLASS_DEFINE(InsertNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYP
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志
@@ -122,7 +122,7 @@ CDATABASETASK_SUBCLASS_DEFINE(InsertNamePwd, PTBuf::CAccountVerify, EDB_TASK_TYP
 
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_Next;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ReadUint64(m_ptBuf, accountid);
-	delete pDataReader;
+	BCLIB_SAFE_DELETE(pDataReader);
 
 	if (m_ptBuf.accountid() == 0)
 	{

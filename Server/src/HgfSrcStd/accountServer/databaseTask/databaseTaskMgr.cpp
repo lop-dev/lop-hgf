@@ -126,17 +126,17 @@ void CDatabaseTaskMgr::_processTask(BCLib::Database::CDatabaseTask * pTaskReply)
     }
 }
 
-CDATABASETASKMGR_TASK_DEFINE(InsertAccountAuth, PTBuf::CAccountAuth)
-CDATABASETASKMGR_TASK_DEFINE(SelectAccountAuth, PTBuf::CAccountAuth)
-CDATABASETASKMGR_TASK_DEFINE(UpdateAccountAuth, PTBuf::CAccountAuth)
-CDATABASETASKMGR_TASK_DEFINE(DeleteAccountAuth, PTBuf::CAccountAuth)
+CDATABASETASKMGR_TASK_DEFINE(InsertAccountAuth, PBLib::CAccountAuth)
+CDATABASETASKMGR_TASK_DEFINE(SelectAccountAuth, PBLib::CAccountAuth)
+CDATABASETASKMGR_TASK_DEFINE(UpdateAccountAuth, PBLib::CAccountAuth)
+CDATABASETASKMGR_TASK_DEFINE(DeleteAccountAuth, PBLib::CAccountAuth)
 
-CDATABASETASKMGR_TASK_DEFINE_FOR_RECYCLE(VerifyNamePwd, PTBuf::CAccountVerify)
-CDATABASETASKMGR_TASK_DEFINE_FOR_RECYCLE(InsertNamePwd, PTBuf::CAccountVerify)
+CDATABASETASKMGR_TASK_DEFINE_FOR_RECYCLE(VerifyNamePwd, PBLib::CAccountVerify)
+CDATABASETASKMGR_TASK_DEFINE_FOR_RECYCLE(InsertNamePwd, PBLib::CAccountVerify)
 
 //////////////////////////////////////////////////////////////////////////
 
-BCLib::int32 CDatabaseTaskMgr::onLoginReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PTBuf::CAccountAuth ptBuf)
+BCLib::int32 CDatabaseTaskMgr::onLoginReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PBLib::CAccountAuth ptBuf)
 {
 	CNetStubPtr netStub = CTcpStubMgr::singleton().getStubByStubID(stubID);
 	if (!netStub)
@@ -177,7 +177,7 @@ setok:
 	return 1;
 }
 
-BCLib::int32 CDatabaseTaskMgr::onQueryAccountNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PTBuf::CAccountAuth ptBuf)
+BCLib::int32 CDatabaseTaskMgr::onQueryAccountNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PBLib::CAccountAuth ptBuf)
  {
      //
      SMsgS2CResQueryAccountNamePwd resMsg;
@@ -242,7 +242,7 @@ BCLib::int32 CDatabaseTaskMgr::onQueryAccountNamePwdReply(BCLib::Network::TcpStu
      return 1;
  }
 
-BCLib::int32 CDatabaseTaskMgr::onAccountSetEssOkayReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PTBuf::CAccountAuth ptBuf)
+BCLib::int32 CDatabaseTaskMgr::onAccountSetEssOkayReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PBLib::CAccountAuth ptBuf)
 {
     CNetStubPtr netStub = CTcpStubMgr::singleton().getStubByStubID(stubID);
     if (!netStub)

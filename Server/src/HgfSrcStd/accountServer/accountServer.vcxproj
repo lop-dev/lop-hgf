@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\HgfSrcShd\EXLib\mysql\include;..\..\HgfSrcShd\EXLib\protobuf\inc;..\..\HgfSrcShd\INLib\inc;..\..\HgfSrcShd\PTLib\inc;..\..\HgfSrcShd\PTLib\inc\PTLib\protoext;..\..\HgfSrcShd\PTLib\inc\PTLib\protobuf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\HgfSrcShd\EXLib\mysql\include;..\..\HgfSrcShd\EXLib\protobuf\inc;..\..\HgfSrcShd\EXLib\hiredis\win\deps\hiredis;..\..\HgfSrcShd\INLib\inc;..\..\HgfSrcShd\PBLib\inc;..\..\HgfSrcShd\PELib\inc;..\..\HgfSrcShd\PBLib\inc\PBLib\protobuf;..\..\HgfSrcShd\PELib\inc\PELib\protoext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -64,9 +64,9 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Dbghelp.lib;libRedis_9md_d.lib;libCommonServer_9md_d.lib;libPTLib_d.lib;hiredis_d.lib;Win32_Interop_d.lib;libProtoBuf_d.lib;mysqlcppconn.lib;libUtility_9md_d.lib;libFramework_9md_d.lib;libNetwork_9md_d.lib;libDatabase_9md_d.lib;libSecurity_9md_d.lib;libCrashDump_9md_d.lib;libMisc_9md_d.lib;Ws2_32.lib;libprotobuf_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Dbghelp.lib;libRedis_9md_d.lib;libCommonServer_9md_d.lib;libPBLib_d.lib;libPELib_d.lib;hiredis_d.lib;Win32_Interop_d.lib;libProtoBuf_d.lib;mysqlcppconn.lib;libUtility_9md_d.lib;libFramework_9md_d.lib;libNetwork_9md_d.lib;libDatabase_9md_d.lib;libSecurity_9md_d.lib;libCrashDump_9md_d.lib;libMisc_9md_d.lib;Ws2_32.lib;libprotobuf_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName)_d.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\..\HgfSrcShd\INLib\lib\SFLib\win-x86-32;..\..\HgfSrcShd\EXLib\hiredis\win\lib;..\..\HgfSrcShd\PTLib\lib\PTLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\BCLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\MWLib\win-x86-32;..\..\HgfSrcShd\EXLib\mysql\lib\win-x86-32;..\..\HgfSrcShd\EXLib\protobuf\lib\win-x86-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\HgfSrcShd\INLib\lib\SFLib\win-x86-32;..\..\HgfSrcShd\EXLib\hiredis\win\lib;..\..\HgfSrcShd\PBLib\lib\PBLib\win-x86-32;..\..\HgfSrcShd\PELib\lib\PELib\win-x86-32;..\..\HgfSrcShd\INLib\lib\BCLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\MWLib\win-x86-32;..\..\HgfSrcShd\EXLib\mysql\lib\win-x86-32;..\..\HgfSrcShd\EXLib\protobuf\lib\win-x86-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(TargetDir)$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -77,7 +77,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\HgfSrcShd\EXLib\mysql\include;..\..\HgfSrcShd\EXLib\protobuf\inc;..\..\HgfSrcShd\INLib\inc;..\..\HgfSrcShd\PTLib\inc;..\..\HgfSrcShd\PTLib\inc\PTLib\protoext;..\..\HgfSrcShd\PTLib\inc\PTLib\protobuf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\HgfSrcShd\EXLib\mysql\include;..\..\HgfSrcShd\EXLib\protobuf\inc;..\..\HgfSrcShd\EXLib\hiredis\win\deps\hiredis;..\..\HgfSrcShd\INLib\inc;..\..\HgfSrcShd\PBLib\inc;..\..\HgfSrcShd\PELib\inc;..\..\HgfSrcShd\PBLib\inc\PBLib\protobuf;..\..\HgfSrcShd\PELib\inc\PELib\protoext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -86,8 +86,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Dbghelp.lib;libRedis_9md.lib;libCommonServer_9md.lib;libPTLib.lib;hiredis.lib;Win32_Interop.lib;mysqlcppconn.lib;libUtility_9md.lib;libFramework_9md.lib;libNetwork_9md.lib;libDatabase_9md.lib;libCrashDump_9md.lib;libMisc_9md.lib;libSecurity_9md.lib;Ws2_32.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\HgfSrcShd\INLib\lib\SFLib\win-x86-32;..\..\HgfSrcShd\EXLib\hiredis\win\lib;..\..\HgfSrcShd\PTLib\lib\PTLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\BCLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\MWLib\win-x86-32;..\..\HgfSrcShd\EXLib\mysql\lib\win-x86-32;..\..\HgfSrcShd\EXLib\protobuf\lib\win-x86-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Dbghelp.lib;libDatabase_9md.lib;mysqlcppconn.lib;libRedis_9md.lib;libCommonServer_9md.lib;libPBLib.lib;libPELib.lib;hiredis.lib;Win32_Interop.lib;libUtility_9md.lib;libFramework_9md.lib;libNetwork_9md.lib;libCrashDump_9md.lib;libMisc_9md.lib;libSecurity_9md.lib;Ws2_32.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\HgfSrcShd\INLib\lib\SFLib\win-x86-32;..\..\HgfSrcShd\EXLib\hiredis\win\lib;..\..\HgfSrcShd\PBLib\lib\PBLib\win-x86-32;..\..\HgfSrcShd\PELib\lib\PELib\win-x86-32;..\..\HgfSrcShd\INLib\lib\BCLib\win-x86-32;..\..\HgfSrcShd\INLib\lib\MWLib\win-x86-32;..\..\HgfSrcShd\EXLib\mysql\lib\win-x86-32;..\..\HgfSrcShd\EXLib\protobuf\lib\win-x86-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -98,7 +98,6 @@
   <ItemGroup>
     <ClCompile Include="accountApp.cpp" />
     <ClCompile Include="accountServer.cpp" />
-    <ClCompile Include="databaseMgr\databaseMgr.cpp" />
     <ClCompile Include="databaseTask\databaseTask.cpp" />
     <ClCompile Include="databaseTask\databaseTaskMgr.cpp" />
     <ClCompile Include="databaseTask\task\accountAuthTask.cpp" />
@@ -109,7 +108,6 @@
   <ItemGroup>
     <ClInclude Include="accountApp.h" />
     <ClInclude Include="accountServer.h" />
-    <ClInclude Include="databaseMgr\databaseMgr.h" />
     <ClInclude Include="databaseTask\databaseTask.h" />
     <ClInclude Include="databaseTask\databaseTaskMgr.h" />
     <ClInclude Include="databaseTask\task\accountAuthTask.h" />

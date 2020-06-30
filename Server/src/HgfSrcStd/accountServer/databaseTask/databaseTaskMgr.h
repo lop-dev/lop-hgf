@@ -17,7 +17,6 @@
 
 #include "../message/accountServerMsg.h"
 
-#include "../databaseMgr/databaseMgr.h"
 #include "../network/netStub.h"
 #include "../network/netStubMgr.h"
 
@@ -56,20 +55,20 @@ public:
 protected:
     virtual void    _processTask(BCLib::Database::CDatabaseTask * pTaskReply);
 
-	CDATABASETASKMGR_TASK_DECLARE(InsertAccountAuth, PTBuf::CAccountAuth);
-	CDATABASETASKMGR_TASK_DECLARE(SelectAccountAuth, PTBuf::CAccountAuth);
-	CDATABASETASKMGR_TASK_DECLARE(UpdateAccountAuth, PTBuf::CAccountAuth);
-	CDATABASETASKMGR_TASK_DECLARE(DeleteAccountAuth, PTBuf::CAccountAuth);
+	CDATABASETASKMGR_TASK_DECLARE(InsertAccountAuth, PBLib::CAccountAuth);
+	CDATABASETASKMGR_TASK_DECLARE(SelectAccountAuth, PBLib::CAccountAuth);
+	CDATABASETASKMGR_TASK_DECLARE(UpdateAccountAuth, PBLib::CAccountAuth);
+	CDATABASETASKMGR_TASK_DECLARE(DeleteAccountAuth, PBLib::CAccountAuth);
 
-	CDATABASETASKMGR_TASK_DECLARE(VerifyNamePwd, PTBuf::CAccountVerify);
-	CDATABASETASKMGR_TASK_DECLARE(InsertNamePwd, PTBuf::CAccountVerify);
+	CDATABASETASKMGR_TASK_DECLARE(VerifyNamePwd, PBLib::CAccountVerify);
+	CDATABASETASKMGR_TASK_DECLARE(InsertNamePwd, PBLib::CAccountVerify);
 
 public:
-	static BCLib::int32     onLoginReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PTBuf::CAccountAuth ptBuf);
-    static BCLib::int32     onQueryAccountNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult, PTBuf::CAccountAuth ptBuf);
-    static BCLib::int32     onAccountSetEssOkayReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult, PTBuf::CAccountAuth ptBuf);
+	static BCLib::int32     onLoginReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult errCode, PBLib::CAccountAuth ptBuf);
+    static BCLib::int32     onQueryAccountNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult, PBLib::CAccountAuth ptBuf);
+    static BCLib::int32     onAccountSetEssOkayReply(BCLib::Network::TcpStubID stubID, EchoID echoID, BCLib::Database::EDBTaskResult, PBLib::CAccountAuth ptBuf);
 
-    //static BCLib::int32     onVerifyNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, EDBTaskResult errCode, PTBuf::CAccountAuth ptBuf);
+    //static BCLib::int32     onVerifyNamePwdReply(BCLib::Network::TcpStubID stubID, EchoID echoID, EDBTaskResult errCode, PBLib::CAccountAuth ptBuf);
 
 private:
     ServerHashMap       m_serverHashMap;

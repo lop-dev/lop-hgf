@@ -8,7 +8,7 @@
 #include <sstream>
 #include <BCLib/utility/logFile.h>
 #include <BCLib/utility/convert.h>
-#include <PTLib/protoext/accountAuth.pe.h>
+#include <PELib/protoext/accountAuth.pe.h>
 #include "accountAuthTask.h"
 #include "../databaseTaskMgr.h"
 
@@ -17,7 +17,7 @@ namespace RN
 namespace AccountServer
 {
 
-CDATABASETASK_SUBCLASS_DEFINE(InsertAccountAuth, PTBuf::CAccountAuth, EDB_TASK_TYPE_INSERT_ACCOUNT_AUTH)
+CDATABASETASK_SUBCLASS_DEFINE(InsertAccountAuth, PBLib::CAccountAuth, EDB_TASK_TYPE_INSERT_ACCOUNT_AUTH)
 {
     CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -29,8 +29,8 @@ CDATABASETASK_SUBCLASS_DEFINE(InsertAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志
@@ -56,7 +56,7 @@ CDATABASETASK_SUBCLASS_DEFINE(InsertAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_Next;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ReadUint64(m_ptBuf, accountid);
-	delete pDataReader;
+	BCLIB_SAFE_DELETE(pDataReader);
 
 	if (m_ptBuf.accountid() == 0)
 	{
@@ -68,7 +68,7 @@ CDATABASETASK_SUBCLASS_DEFINE(InsertAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
     return true;
 }
 
-CDATABASETASK_SUBCLASS_DEFINE(SelectAccountAuth, PTBuf::CAccountAuth, EDB_TASK_TYPE_SELECT_ACCOUNT_AUTH)
+CDATABASETASK_SUBCLASS_DEFINE(SelectAccountAuth, PBLib::CAccountAuth, EDB_TASK_TYPE_SELECT_ACCOUNT_AUTH)
 {
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -80,8 +80,8 @@ CDATABASETASK_SUBCLASS_DEFINE(SelectAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志
@@ -98,13 +98,13 @@ CDATABASETASK_SUBCLASS_DEFINE(SelectAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_Next;
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_SQL_ExecuteReader_CAccountAuth(m_ptBuf);
 
-	delete pDataReader;
+	BCLIB_SAFE_DELETE(pDataReader);
 
 	m_errCode = BCLib::Database::EDB_TASK_ERROR_OK;
 	return true;
 }
 
-CDATABASETASK_SUBCLASS_DEFINE(UpdateAccountAuth, PTBuf::CAccountAuth, EDB_TASK_TYPE_UPDATE_ACCOUNT_AUTH)
+CDATABASETASK_SUBCLASS_DEFINE(UpdateAccountAuth, PBLib::CAccountAuth, EDB_TASK_TYPE_UPDATE_ACCOUNT_AUTH)
 {
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -116,8 +116,8 @@ CDATABASETASK_SUBCLASS_DEFINE(UpdateAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志
@@ -134,7 +134,7 @@ CDATABASETASK_SUBCLASS_DEFINE(UpdateAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	return true;
 }
 
-CDATABASETASK_SUBCLASS_DEFINE(DeleteAccountAuth, PTBuf::CAccountAuth, EDB_TASK_TYPE_DELETE_ACCOUNT_AUTH)
+CDATABASETASK_SUBCLASS_DEFINE(DeleteAccountAuth, PBLib::CAccountAuth, EDB_TASK_TYPE_DELETE_ACCOUNT_AUTH)
 {
 	CDATABASETASK_SUBCLASS_DEFINE_REPLY_Variable;
 
@@ -146,8 +146,8 @@ CDATABASETASK_SUBCLASS_DEFINE(DeleteAccountAuth, PTBuf::CAccountAuth, EDB_TASK_T
 	}
 
 	BCLib::Utility::CStringA tmpName = strName;
-	HashIndex(tmpName, strDBIndex, strTBIndex);
-	strDBName = getDBPrefix() + strDBIndex;
+	hashIndex(tmpName, strDBIndex, strTBIndex);
+	strDBName = getDBName(strDBIndex);
 	strTBName = "AccountAuth" + strTBIndex;
 
 	// 打印一下提示日志

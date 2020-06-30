@@ -13,7 +13,7 @@
 #include <BCLib/network/netInit.h>
 #include <BCLib/utility/io/xmlFile.h>
 #include <BCLib/framework/mainThread.h>
-
+#include <BCLib/database/databaseMgr.h>
 #ifdef WIN32
 #include <MWLib/crashDump/crashDump.h>
 #endif//WIN32
@@ -22,7 +22,6 @@
 #include "accountServer.h"
 #include "./network/netStubMgr.h"
 #include "./network/netStub.h"
-#include "./databaseMgr/databaseMgr.h"
 #include "./databaseTask/databaseTaskMgr.h"
 
 BCLIB_FW_MAIN(RN::AccountServer::CAccountServer::main)
@@ -113,6 +112,7 @@ bool CAccountServer::_callback()
 int CAccountServer::_final()
 {
     //return BCLib::Network::CTcpServer::_final();
+	RN::AccountServer::CAccountApp::singleton().final();
     BCLib::Network::CTcpServer::_final();
     return BCLib::Framework::CMainThread::_final();
 }
@@ -149,7 +149,8 @@ bool CAccountServer::_initConfig()
         }
 		strDbFile = fullConfig + strDbFile;
 
-		if (!CDatabaseMgr::singleton().init(strDbFile))
+		//if (!CDatabaseMgr::singleton().init(strDbFile))
+		if (!BCLib::Database::CDatabaseMgr::singleton().init(&CDatabaseTaskMgr::singleton(), strDbFile))
 		{
 			BCLIB_LOG_INFOR(BCLib::ELOGMODULE_DEFAULT, "CDatabaseMgr init Failed!");
 			return false;
@@ -228,7 +229,7 @@ bool CAccountServer::_initConfig()
     fclose(pkFile);
 
     m_WordFilter.addUnLawKeyWordsInUTF8(pkBuf);
-    delete[] pkBuf;
+    BCLIB_SAFE_DELETE_ARRAY(pkBuf);
 
     return true;
 }

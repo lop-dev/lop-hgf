@@ -9,17 +9,17 @@
 #define __SSLIB_ACCOUNTSET_ACCOUNTSERVER_DATABASETASK_TASK_ACCOUNTAUTHTASK_H__
 
 #include "../databaseTask.h"
-#include <PTLib/protobuf/accountAuth.pb.h>
+#include <PBLib/protobuf/accountAuth.pb.h>
 
 namespace RN
 {
 namespace AccountServer
 {
 
-CDATABASETASK_SUBCLASS_DECLARE(InsertAccountAuth, PTBuf::CAccountAuth);
-CDATABASETASK_SUBCLASS_DECLARE(SelectAccountAuth, PTBuf::CAccountAuth);
-CDATABASETASK_SUBCLASS_DECLARE(UpdateAccountAuth, PTBuf::CAccountAuth);
-CDATABASETASK_SUBCLASS_DECLARE(DeleteAccountAuth, PTBuf::CAccountAuth);
+CDATABASETASK_SUBCLASS_DECLARE(InsertAccountAuth, PBLib::CAccountAuth);
+CDATABASETASK_SUBCLASS_DECLARE(SelectAccountAuth, PBLib::CAccountAuth);
+CDATABASETASK_SUBCLASS_DECLARE(UpdateAccountAuth, PBLib::CAccountAuth);
+CDATABASETASK_SUBCLASS_DECLARE(DeleteAccountAuth, PBLib::CAccountAuth);
 
 }//AccountServer
 }//RN

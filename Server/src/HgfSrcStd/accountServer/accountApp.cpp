@@ -7,7 +7,6 @@
 //////////////////////////////////////////////////////////////////////
 #include <BCLib/utility/dateTime.h>
 #include "./databaseTask/databaseTaskMgr.h"
-#include "./databaseMgr/databaseMgr.h"
 #include "accountApp.h"
 
 namespace RN
@@ -27,7 +26,7 @@ CAccountApp::CAccountApp()
 
 CAccountApp::~CAccountApp()
 {
-    final();
+	//final();
 }
 
 bool CAccountApp::init()

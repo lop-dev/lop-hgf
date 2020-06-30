@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="databaseMgr">
-      <UniqueIdentifier>{c3b0b82f-94f8-4389-bde1-2d070a9689ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="databaseTask">
       <UniqueIdentifier>{63e1bc7a-49cc-4b09-99a6-948db3f26d5b}</UniqueIdentifier>
     </Filter>
@@ -38,9 +35,6 @@
     <ClCompile Include="databaseTask\databaseTaskMgr.cpp">
       <Filter>databaseTask</Filter>
     </ClCompile>
-    <ClCompile Include="databaseMgr\databaseMgr.cpp">
-      <Filter>databaseMgr</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="accountApp.h" />
@@ -71,9 +65,6 @@
     </ClInclude>
     <ClInclude Include="databaseTask\databaseTaskMgr.h">
       <Filter>databaseTask</Filter>
-    </ClInclude>
-    <ClInclude Include="databaseMgr\databaseMgr.h">
-      <Filter>databaseMgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
