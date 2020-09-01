@@ -85,9 +85,9 @@ void CPlatformApp::_update()
     {
         CPlatformServer::singleton().checkMasterServer();
     }
+
     if (s_OneSec(now))
     {
-        //CLogSystem::singleton().update();
     }
 }
 
