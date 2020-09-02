@@ -1,43 +1,44 @@
 //////////////////////////////////////////////////////////////////////
-//  created:    2020/08/26
-//  filename:   billServer/billApp.cpp
+//  created:    2012/08/20
+//  filename:   activityServer/activityApp.cpp
 //  author:     League of Perfect
-/// @brief
-///
+/// @brief	
+/// 
 //////////////////////////////////////////////////////////////////////
-#include "platformApp.h"
-#include "platformServer.h"
+#include "activityApp.h"
 #include <BCLib/utility/dateTime.h>
 #include <SHLib/commonDefine/logFile.h>
 #include "msgGate.h"
+#include "activityServer.h"
+#include <cmath>
 
 namespace LOP
 {
+    BCLib::Utility::CSteadyTime CActivityApp::s_SteadyTime;
+    BCLib::Utility::CDelayTimer CActivityApp::s_TenSec(10000, s_SteadyTime);
+    BCLib::Utility::CDelayTimer CActivityApp::s_ThreeSec(3000, s_SteadyTime);
+    BCLib::Utility::CDelayTimer CActivityApp::s_TenMin(600000, s_SteadyTime);
 
-    BCLib::Utility::CSteadyTime CPlatformApp::s_SteadyTime;
-    BCLib::Utility::CDelayTimer CPlatformApp::s_OneSec(1000, s_SteadyTime);
-    BCLib::Utility::CDelayTimer CPlatformApp::s_ThreeSec(3000, s_SteadyTime);
-    BCLib::Utility::CDelayTimer CPlatformApp::s_TenSec(10000, s_SteadyTime);
+    BCLIB_SINGLETON_DEFINE(CActivityApp);
 
-    BCLIB_SINGLETON_DEFINE(CPlatformApp);
-
-    CPlatformApp::CPlatformApp()
+    CActivityApp::CActivityApp()
     {
     }
 
-    CPlatformApp::~CPlatformApp()
+    CActivityApp::~CActivityApp()
     {
     }
 
-    bool CPlatformApp::init()
+    bool CActivityApp::init()
     {
         /// TODO: add Logic Init here
         CMsgGate::singleton().init();
-
+        //从redis加载跨服活动数据
+        //CActivitySystem::singleton().Init();
         return true;
     }
 
-    bool CPlatformApp::_init()
+    bool CActivityApp::_init()
     {
         if (!SFLib::External::CExternalApp::_init())
         {
@@ -46,13 +47,12 @@ namespace LOP
         return true;
     }
 
-    bool CPlatformApp::_callback()
+    bool CActivityApp::_callback()
     {
         if (!SFLib::External::CExternalApp::_callback())
         {
             return false;
         }
-
         BCLib::Utility::CSurveyTimer surveyTimer;
         surveyTimer.reset();
         m_frameTime.update();
@@ -65,29 +65,30 @@ namespace LOP
         {
             BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "循环超出[%d]", tempMs);
         }
-
         return true;
     }
 
-    int CPlatformApp::_final()
+    int CActivityApp::_final()
     {
         return SFLib::External::CExternalApp::_final();
     }
 
-    void CPlatformApp::_update()
+    void CActivityApp::_update()
     {
         /// TODO: add Logic update here
         m_frameTime.update();
         CMsgGate::singleton().update();
+        //CDatabaseTaskMgr::singleton().processTaskResults();
 
         BCLib::Utility::CSteadyTime now;
         if (s_ThreeSec(now))
         {
-            CPlatformServer::singleton().checkMasterServer();
+            CActivityServer::singleton().checkMasterServer();
         }
 
-        if (s_OneSec(now))
+        if (s_TenSec(now))
         {
+            //CActivitySystem::singleton().update();
         }
     }
 

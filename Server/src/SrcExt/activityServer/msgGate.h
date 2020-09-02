@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
 //  created:    2012/08/20
-//  filename:   groupServer/msgGate.h
+//  filename:   activityServer/msgGate.h
 //  author:     League of Perfect
-/// @brief
-///
+/// @brief	
+/// 
 //////////////////////////////////////////////////////////////////////
-#ifndef __LOP_GROUPSERVER_MSGGATE_H__
-#define __LOP_GROUPSERVER_MSGGATE_H__
+#ifndef __LOP_ACTIVITYSERVER_MSGGATE_H__
+#define __LOP_ACTIVITYSERVER_MSGGATE_H__
 
 #include <SFLib/commonServer/netMsgQueue.h>
 #include <SFLib/commonDefine/msgGate.h>
@@ -34,4 +34,4 @@ namespace LOP
 
 }//namespace LOP
 
-#endif //__LOP_GROUPSERVER_MSGGATE_H__
+#endif //__LOP_ACTIVITYSERVER_MSGGATE_H__

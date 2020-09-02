@@ -1,15 +1,13 @@
 //////////////////////////////////////////////////////////////////////
 //  created:    2012/08/20
-//  filename:   platformServer/msgGate.cpp
+//  filename:   activityServer/msgGate.cpp
 //  author:     League of Perfect
-/// @brief
-///
+/// @brief	
+/// 
 //////////////////////////////////////////////////////////////////////
 #include "msgGate.h"
-#include <MSLib/commonDefine/message.h>
-#include <PBLib/protobuf/message.pb.h>
 #include <SHLib/commonDefine/logFile.h>
-#include <SFLib/externalServer/netPeerMgr.h>
+#include <MSLib/commonDefine/message.h>
 
 namespace LOP
 {
@@ -18,12 +16,10 @@ namespace LOP
 
     CMsgGate::CMsgGate()
     {
-        ;
     }
 
     CMsgGate::~CMsgGate()
     {
-        ;
     }
 
     void CMsgGate::init()
@@ -31,8 +27,7 @@ namespace LOP
         static bool bInit = false;
         if (!bInit)
         {
-            //addMsgExecMgr(PBLib::EFUNC_LOGSYSTEM, &CLogSystem::singleton());
-
+            //addMsgExecMgr(PBLib::EFUNC_ACTIVITYSYSTEM, &CActivitySystem::singleton());
             bInit = true;
         }
     }
@@ -50,7 +45,7 @@ namespace LOP
             _onSFCallback(netMessage);
             return true;
         }
-        return this->parseMsg(msgLabel, netMessage, netMessageSize);
+        return CMsgGate::singleton().parseMsg(msgLabel, netMessage, netMessageSize);
     }
 
     void CMsgGate::_onSFCallback(const SFLib::Message::SNetMessage* msg)
@@ -66,10 +61,6 @@ namespace LOP
         case MSLib::SMsgLC2LCSFCallback::ESCT_SERVER_LEAVE:
             break;
         case MSLib::SMsgLC2LCSFCallback::ESCT_SERVER_CLOSE:
-            break;
-        case MSLib::SMsgLC2LCSFCallback::ESCT_PEER_ENTER:
-            break;
-        case MSLib::SMsgLC2LCSFCallback::ESCT_PEER_LEAVE:
             break;
         default:
             break;

@@ -15,30 +15,30 @@
 namespace LOP
 {
 
-class CGroupApp : public SFLib::External::CExternalApp
-{
-    BCLIB_SINGLETON_DECLARE(CGroupApp);
+    class CGroupApp : public SFLib::External::CExternalApp
+    {
+        BCLIB_SINGLETON_DECLARE(CGroupApp);
 
-protected:
-    CGroupApp();
-    virtual ~CGroupApp();
+    protected:
+        CGroupApp();
+        virtual ~CGroupApp();
 
-public:
-    bool init();
+    public:
+        bool init();
 
-protected:
-	virtual bool _init();
-	virtual bool _callback();
-	virtual int _final();
-    virtual void _update();
+    protected:
+        virtual bool _init();
+        virtual bool _callback();
+        virtual int _final();
+        virtual void _update();
 
-private:
-	BCLib::Framework::CFrameTime m_frameTime;
-	static BCLib::Utility::CSteadyTime s_SteadyTime;
-	static BCLib::Utility::CDelayTimer s_OneSec;
-	static BCLib::Utility::CDelayTimer s_ThreeSec;//3√Î
-	static BCLib::Utility::CDelayTimer s_TenSec;
-};
+    private:
+        BCLib::Framework::CFrameTime m_frameTime;
+        static BCLib::Utility::CSteadyTime s_SteadyTime;
+        static BCLib::Utility::CDelayTimer s_OneSec;
+        static BCLib::Utility::CDelayTimer s_ThreeSec;//3√Î
+        static BCLib::Utility::CDelayTimer s_TenSec;
+    };
 
 }//namespace LOP
 

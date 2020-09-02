@@ -1,47 +1,59 @@
 //////////////////////////////////////////////////////////////////////
 //  created:    2012/08/20
-//  filename:   groupServer/groupServer.cpp
+//  filename:   activityServer/activityServer.cpp
 //  author:     League of Perfect
-/// @brief
-///
+/// @brief	
+/// 
 //////////////////////////////////////////////////////////////////////
-#include "groupServer.h"
-#include "groupApp.h"
-#include <iostream>
-
+#include "activityServer.h"
 #include <BCLib/framework/sysConfig.h>
 #include <BCLib/utility/io/directoryInfo.h>
 #include <BCLib/utility/io/xmlFile.h>
 #include <BCLib/utility/convert.h>
 #ifdef WIN32
 #include <MWLib/crashDump/crashDump.h>
+#else
+#include <csignal>
+#include <gperftools/profiler.h>
 #endif//WIN32
 #include <SFLib/commonServer/msgLabel.h>
 #include <SFLib/commonServer/tcpStubMgr.h>
 #include <SHLib/commonDefine/logFile.h>
 #include <SHLib/utility/svnInfo.h>
 #include <SHLib/commonDefine/stringFilterWrap.h>
-#include <SHLib/staticDataSystem/staticDataSystem.h>
 #include <PELib/commonDefine/baseDef.h>
-#include <SFLib/commonServer/netPeerMgr.h>
 #include <SFLib/externalServer/netPeerMgr.h>
 #ifdef _WIN32
 #include <process.h>
 #else
 #include <unistd.h>
 #endif
+#include "activityApp.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef WIN32
 BOOL WINAPI CtrlCHandler(DWORD CtrlType)
 {
-    CGroupServer::singleton().setValid(false);
+    CActivityServer::singleton().setValid(false);
     //!只能Hold住5S
     while (1)
     {
         ;
     }
     return TRUE;
+}
+#else
+static void signalHandler(int signal)
+{
+    if (signal == SIGUSR1) {
+        BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "gperf start!");
+        ProfilerStart("activity.prof");
+    }
+    if (signal == SIGUSR2) {
+        BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "gperf stop!");
+        ProfilerStop();
+    }
 }
 #endif//WIN32
 
@@ -53,44 +65,28 @@ static void SetupDefaultDirectory()
 
 //////////////////////////////////////////////////////////////////////////
 
-BCLIB_FW_MAIN(CGroupServer::main);
+BCLIB_FW_MAIN(CActivityServer::main);
 
-BCLIB_SINGLETON_DEFINE(CGroupServer)
+BCLIB_SINGLETON_DEFINE(CActivityServer)
 
-CGroupServer::CGroupServer()
-    : SFLib::External::CExternalServer("groupServer")
+CActivityServer::CActivityServer()
+    : SFLib::External::CExternalServer("activityServer")
 {
-    //m_tableCount = 0;
-    //m_dbCount = 0;
-    //m_vecDBInfo.clear();
-    //this->setServerID(60401);
-
+    m_tableCount = 0;
+    m_dbCount = 0;
+    m_vecDBInfo.clear();
+    //this->setServerID(60501);
     PELib::setRedisSystem(&MWLib::Redis::CRedisSystem::singleton());
     PELib::setNetPeerMgr(&SFLib::External::CNetPeerMgr::singleton());
     PELib::setCommonServer(this);
 }
 
-CGroupServer::~CGroupServer()
+CActivityServer::~CActivityServer()
 {
     ;
 }
 
-
-bool CGroupServer::loadAllTable()
-{
-    //加载策划配置文件
-    if (!SHLib::CStaticDataSystem::singleton().loadAllTable("../../../gameplay/table/"))
-    {
-        BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "load All Table error.");
-        return false;
-    }
-
-    SHLib::CStaticDataSystem::singleton().init();
-
-
-    return true;
-}
-bool CGroupServer::_initConfig()
+bool CActivityServer::_initConfig()
 {
     std::string currpath = BCLib::Framework::CSysConfig::singleton()["workpath"];
     std::string configPath = BCLib::Framework::CSysConfig::singleton()["configpath"];
@@ -112,28 +108,26 @@ bool CGroupServer::_initConfig()
     bool rt = SFLib::External::CExternalServer::loadConfigFile(configPath + "config.ini");
     if (!rt)
     {
-        std::cerr << "loadConfigFile " << configPath << "config.ini fail." << std::endl;
         return false;
     }
 
-
     std::string logFile = BCLib::Framework::CSysConfig::singleton()["LogFile"];
     if (logFile.empty() || logFile == "") {
-        logFile = BCLib::Framework::CSysConfig::singleton()["groupServer/LogFile"];
-        //if (logFile.empty() || logFile == "") {
-            //logFile = "groupServer.log";
-        logFile = "groupServer_" + BCLib::Utility::CConvert::toStringA(getpid()) + ".log";
-        BCLib::Framework::CSysConfig::singleton()["groupServer/LogFile"] = logFile;
-        //}
+        logFile = BCLib::Framework::CSysConfig::singleton()["activityServer/LogFile"];
+        //if (logFile.empty() || logFile == ""){
+            //logFile = "GameServer.log";
+        logFile = "activityServer_" + BCLib::Utility::CConvert::toStringA(getpid()) + ".log";
+        BCLib::Framework::CSysConfig::singleton()["activityServer/LogFile"] = logFile;
+        // }
     }
     else {
-        BCLib::Framework::CSysConfig::singleton()["groupServer/LogFile"] = logFile;
+        BCLib::Framework::CSysConfig::singleton()["activityServer/LogFile"] = logFile;
     }
 
-    std::string logLevel = BCLib::Framework::CSysConfig::singleton()["groupServer/LogLevel"];
+    std::string logLevel = BCLib::Framework::CSysConfig::singleton()["activityServer/LogLevel"];
     if (logLevel.empty() || logLevel == "") {
         logLevel = "debug";
-        BCLib::Framework::CSysConfig::singleton()["groupServer/LogLevel"] = logLevel;
+        BCLib::Framework::CSysConfig::singleton()["activityServer/LogLevel"] = logLevel;
     }
 
     std::string logFilePath = logPath + logFile;
@@ -151,11 +145,47 @@ bool CGroupServer::_initConfig()
     }
 #endif//WIN32
 
+    /*std::string serverDIStr = BCLib::Framework::CSysConfig::singleton()["activityServer/activityServerID"];
+    this->setServerID(BCLib::Utility::CConvert::toUint16(serverDIStr));
+    BCLIB_LOG_DEBUG(SHLib::ELOGMODULE_SHLIB_DEFAULT, "ServerID = %d ", this->getServerID());
+    if (this->getServerID() == 0)
+    {
+        BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "ServerID = %d ", this->getServerID());
+        return false;
+    }*/
+    std::string fullConfig = currpath + "/config/";
+    if (BCLib::Utility::CDirectoryInfo::isExist(currpath + "/gameconfig/"))
+    {
+        fullConfig = currpath + "/gameconfig/";
+    }
+
+    //std::string strAvailability = BCLib::Framework::CSysConfig::singleton()["ActivityServer/Availability"];
+    //if (strAvailability == "true")
+    //{
+    //	std::string strDbFile = BCLib::Framework::CSysConfig::singleton()["ActivityServer/DatabaseFile"];
+    //	if (strDbFile.empty() || strDbFile == "")
+    //	{
+    //		strDbFile = "activityServerDB.xml";
+    //	}
+    //	strDbFile = fullConfig + strDbFile;
+
+    //	if (!LOP::CDatabaseMgr::singleton().init(strDbFile))
+    //	{
+    //		BCLIB_LOG_INFOR(BCLib::ELOGMODULE_DEFAULT, "CDatabaseMgr init Failed!");
+    //		return false;
+    //	}
+    //}
+
+    std::string redisIp = BCLib::Framework::CSysConfig::singleton()["ActivityServer/ExternalRedisIp"];
+    BCLib::Utility::CStringA  redisPortStr = (std::string)BCLib::Framework::CSysConfig::singleton()["ActivityServer/ExternalRedisPort"];
+    int redisPort = BCLib::Utility::CConvert::toInt32(redisPortStr);
+    std::string redisPasswd = BCLib::Framework::CSysConfig::singleton()["ActivityServer/ExternalRedisPasswd"];
+    MWLib::Redis::CRedisSystem::singleton().setInfo(redisIp, redisPort, redisPasswd, MWLib::Redis::E_REDIS_SERVERTYPE_EXTERNAL);
 
     return true;
 }
 
-int CGroupServer::main()
+int CActivityServer::main()
 {
 #ifndef WIN32  
     daemon(1, 1);
@@ -169,32 +199,27 @@ int CGroupServer::main()
 
     MSLib::registerAllMsg2StrFunc();
 
-    bool ret = CGroupServer::singleton()._initConfig();
-    if (!ret)
-    {
-        return -1;
-    }
-
-    bool loadTableFlag = CGroupServer::singleton().loadAllTable();
-    if (!loadTableFlag)
-    {
-        return -1;
-    }
+    CActivityServer::singleton()._initConfig();
 
 #ifdef _DEBUG
-    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "启动 SuperLog Server Debug ......");
+    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "启动 Activity Server Debug ......");
     //BCLIB_LOG_INFOR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "-------------开始打印当前参数配置---------------");
     //BCLib::Framework::CSysConfig::singleton().showAllData();
     //BCLIB_LOG_INFOR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "-------------结束打印当前参数配置---------------");
 #else
-    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "启动 SuperLog Server Release ......");
+    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "启动 Activity Server Release ......");
 #endif//_DEBUG
 
-    return CGroupServer::singleton()._main();
+    return CActivityServer::singleton()._main();
+}
+
+bool CActivityServer::hasUnLawKeyWord(const std::string& strName) const
+{
+    return SHLib::CStringFilterWrap::singleton().hasUnLawKeyWord(strName);
 }
 
 
-bool CGroupServer::_init()
+bool CActivityServer::_init()
 {
     //if(!LOP::CDatabaseMgr::singleton().init())
     //{
@@ -206,18 +231,14 @@ bool CGroupServer::_init()
         BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "[SFLib::External::CExternalServer::_init()] failed");
         return false;
     }
-    if (!LOP::CGroupApp::singleton().init())
-    {
-        BCLIB_LOG_ERROR(SHLib::ELOGMODULE_SHLIB_DEFAULT, "app init failed");
-        return false;
-    }
-    LOP::CGroupApp::singleton().start();
+    LOP::CActivityApp::singleton().init();
+    LOP::CActivityApp::singleton().start();
     ntfInitSuccess();
-    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "-------------groupServer启动成功---------------");
+    BCLIB_LOG_SYSTEM(SHLib::ELOGMODULE_SHLIB_DEFAULT, "-------------activityServer启动成功---------------");
     return true;
 }
 
-bool CGroupServer::_callback()
+bool CActivityServer::_callback()
 {
     // 	if(!SFLib::External::CExternalServer::_recvMsg(true))
     // 	{
@@ -230,13 +251,15 @@ bool CGroupServer::_callback()
     return SFLib::External::CExternalServer::_callback();
 }
 
-int CGroupServer::_final()
+int CActivityServer::_final()
 {
-    if (LOP::CGroupApp::singleton().isRunning()) {
-        LOP::CGroupApp::singleton().terminate();
-        LOP::CGroupApp::singleton().join();
+    if (LOP::CActivityApp::singleton().isRunning()) {
+        LOP::CActivityApp::singleton().terminate();
+        LOP::CActivityApp::singleton().join();
     }
+    LOP::CActivityApp::singleton().final();
 
     int res = SFLib::External::CExternalServer::_final();
     return res;
 }
+

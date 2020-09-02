@@ -1,32 +1,32 @@
 //////////////////////////////////////////////////////////////////////
 //  created:    2012/08/20
-//  filename:   groupServer/groupServer.h
+//  filename:   activityServer/activityServer.h
 //  author:     League of Perfect
-/// @brief
-///
+/// @brief	
+/// 
 //////////////////////////////////////////////////////////////////////
-#ifndef __LOP_GROUPSERVER_GROUPSERVER_H__
-#define __LOP_GROUPSERVER_GROUPSERVER_H__
+#ifndef __LOP_ACTIVITYSERVER_ACTIVITYSERVER_H__
+#define __LOP_ACTIVITYSERVER_ACTIVITYSERVER_H__
 
 #include <BCLib/utility/version.h>
 #include <BCLib/utility/singleton.h>
+#include <BCLib/database/dbInfo.h>
 #include <SFLib/externalServer/externalServer.h>
 #include <MSLib/commonDefine/message.h>
 #include <SHLib/commonDefine/baseDef.h>
-#include <SHLib/commonDefine/sfCallback.h>
 
-class CGroupServer : public SFLib::External::CExternalServer
+class CActivityServer : public SFLib::External::CExternalServer
 {
-    BCLIB_SINGLETON_DECLARE(CGroupServer);
+    BCLIB_SINGLETON_DECLARE(CActivityServer);
 
 protected:
-    CGroupServer();
-    virtual ~CGroupServer();
+    CActivityServer();
+    virtual ~CActivityServer();
 
 public:
     virtual SFLib::EServerType getServerType()
     {
-        return (SFLib::EServerType)MSLib::EEXTSERVER_PLATFORM;
+        return (SFLib::EServerType)MSLib::EEXTSERVER_ACTIVITY;
     }
 
     virtual std::string getServerVersion()
@@ -36,21 +36,23 @@ public:
 
 protected:
     bool _initConfig();
-    bool loadAllTable();
 
 public:
     static int main();
-
+    bool hasUnLawKeyWord(const std::string& strName) const;
 
 protected:
     virtual bool _init();
     virtual bool _callback();
     virtual int _final();
 
-    SFCB_PEER_ENTER;
-    SFCB_PEER_LEAVE;
+private:
+    std::vector<BCLib::Database::CDBInfo> m_vecDBInfo;
+    BCLib::uint32 m_dbCount;
+    BCLib::uint32 m_tableCount;
+
 };
 
-#endif //__LOP_GROUPSERVER_GROUPSERVER_H__
+#endif //__LOP_ACTIVITYSERVER_ACTIVITYSERVER_H__
 
 

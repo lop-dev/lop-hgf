@@ -55,7 +55,7 @@ static void SetupDefaultDirectory()
 
 BCLIB_FW_MAIN(CPlatformServer::main);
 
-BCLIB_SINGLETON_DEFINE(CPlatformServer)
+BCLIB_SINGLETON_DEFINE(CPlatformServer);
 
 CPlatformServer::CPlatformServer()
     : SFLib::External::CExternalServer("PlatformServer")
