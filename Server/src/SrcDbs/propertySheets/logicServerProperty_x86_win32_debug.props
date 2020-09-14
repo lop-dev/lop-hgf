@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <SrcShdPath>..\..\SrcShd</SrcShdPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SrcShdPath)\EXLib\hiredis\win\deps\hiredis;$(SrcShdPath)\INLib\inc;$(SrcShdPath)\EXLib\protobuf\inc;$(SrcShdPath)\PBLib\inc;$(SrcShdPath)\PELib\inc;$(SrcShdPath)\PBLib\inc\PBLib\protobuf;$(SrcShdPath)\PELib\inc\PELib\protoext;$(SrcShdPath)\SHLib\inc;$(SrcShdPath)\MSLib\inc;$(SrcShdPath)\DTLib\inc;$(SrcShdPath)\STLib\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;PELIB_DLL_IMPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4127;4201;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libRedis_9md_d.lib;libUtility_9md_d.lib;libNetwork_9md_d.lib;libFramework_9md_d.lib;libSecurity_9md_d.lib;libCrashDump_9md_d.lib;libCommonServer_9md_d.lib;libLogicServer_9md_d.lib;libProtoBuf_d.lib;libPBLib_d.lib;libPELib_d.lib;libMSLib_d.lib;libDTLib_d.lib;libSHLib_d.lib;libSTLib_d.lib;Dbghelp.lib;hiredis_d.lib;Win32_Interop_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName)_d.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(SrcShdPath)\EXLib\hiredis\win\lib;$(SrcShdPath)\INLib\lib\BCLib\win-x86-32;$(SrcShdPath)\INLib\lib\MWLib\win-x86-32;$(SrcShdPath)\INLib\lib\SFLib\win-x86-32;$(SrcShdPath)\EXLib\protobuf\lib\win-x86-32;$(SrcShdPath)\MSLib\lib\MSLib\win-x86-32;$(SrcShdPath)\PBLib\lib\PBLib\win-x86-32;$(SrcShdPath)\PELib\lib\PELib\win-x86-32;$(SrcShdPath)\SHLib\lib\SHLib\win-x86-32;$(SrcShdPath)\DTLib\lib\DTLib\win-x86-32;$(SrcShdPath)\STLib\lib\STLib\win-x86-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="SrcShdPath">
+      <Value>$(SrcShdPath)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
